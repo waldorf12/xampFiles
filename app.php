@@ -36,10 +36,11 @@ if ($conexion->connect_error) {
 
 		<!-- Nav -->
 		<nav id="nav">
-			<a href="app.php#me" class="icon fa-home active"><span>Home</span></a>
+			<a href="app.php" class="icon fa-home active"><span>Home</span></a>
 			<a href="#Viajes" class="icon fa-map-marker"><span>Viajes</span></a>
 			<a href="#Autos" class="icon fa-car"><span>Autos</span></a>
 			<a href="#Choferes" class="icon fa-users"><span>Choferes</span></a>
+      <a href="#Responsables" class="icon fa-star"><span>Responsables</span></a>
 			<a href="#Calendario" class="icon fa-calendar"><span>Calendario</span></a>
 			<a href="#Consultar" class="icon fa-search"><span>Consultar</span></a>
 
