@@ -25,11 +25,11 @@ echo $sql;
 
 
 if ($conexion->query($sql)) {
-  header('Location: app.php?Accion=MostrarMensaje&Mensaje=Cambio Realizado Correctamente&Id='.$IdMovAutos.'&Bandera=1#Viajes');
+  header('Location: app.php?AccionViajes=4&MensajeViajes&MensajeViajes=Viaje Modificado Correctamente&BanderaViajes=1#Viajes');
 
 }
 else {
-  header('Location: app.php?Accion=MostrarMensaje&Mensaje=No se Realizo el cambio&Id='.$IdMovAutos.'&Bandera=2#Viajes');
+  header('Location: app.php?AccionViajes=4&MensajeViajes&MensajeViajes=No se modifico el viaje&BanderaViajes=2#Viajes');
 }
 // $row = $resultado->fetch_array(MYSQLI_ASSOC);
 

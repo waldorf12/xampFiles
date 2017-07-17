@@ -19,18 +19,126 @@ $Destino = $_POST["Destino"];
 $IdResponsable = $_POST["IdResponsable"];
 
 
-$sql = 'INSERT INTO MovcAutos (IdAuto,IdChofer,FechaInicial,FechaFinal,Destino,IdResponsable) VALUES ('.$IdAuto.','.$IdChofer.',"'.$FechaInicial.'","'.$FechaFinal.'","'.$Destino.'",'.$IdResponsable.') ';
+$AutoSFree = 0;
+$ChoferSFree = 0;
 
-echo $sql;
 
+//Validacion que el auto no este ocupado
+$resultado = $conexion->query('
+SELECT * FROM movcautos
 
-if ($conexion->query($sql)) {
-  header('Location: app.php?Accion=MostrarMensaje&Mensaje=Viaje Agregado&Id='.$IdMovAutos.'&Bandera=1#Viajes');
+WHERE ((FechaInicial <= "'.$FechaInicial.'"
+    AND FechaFinal >= "'.$FechaFinal.'")
+        OR FechaFinal BETWEEN "'.$FechaInicial.'" AND "'.$FechaFinal.'"
+        OR FechaInicial BETWEEN "'.$FechaInicial.'" AND "'.$FechaFinal.'")
+    AND IdAuto = '.$IdAuto.'
+');
+$AutoOcupado = $resultado->num_rows;
+$resultado->close();
+// echo $AutoOcupado;
 
+switch ($AutoOcupado)
+ {
+  case '0':
+  $AutoSFree = 1;
+    break;
+
+  default:
+    $AutoSFree = 0;
+    break;
 }
-else {
-  header('Location: app.php?Accion=MostrarMensaje&Mensaje=No se inserto el viaje&Id='.$IdMovAutos.'&Bandera=2#Viajes');
+
+
+//Validacion de un chofer
+
+
+$resultado = $conexion->query('
+
+  SELECT * FROM movcautos
+
+  WHERE ((FechaInicial <= "'.$FechaInicial.'"
+      AND FechaFinal >= "'.$FechaFinal.'")
+          OR FechaFinal BETWEEN "'.$FechaInicial.'" AND "'.$FechaFinal.'"
+          OR FechaInicial BETWEEN "'.$FechaInicial.'" AND "'.$FechaFinal.'")
+      AND IdChofer = '.$IdChofer.'
+  '
+);
+$ChoferOcupado = $resultado->num_rows;
+$resultado->close();
+// echo $ChoferOcupado;
+
+switch ($ChoferOcupado)
+ {
+  case '0':
+  $ChoferSFree = 1;
+    break;
+
+  default:
+    $ChoferSFree = 0;
+    break;
 }
+
+
+// if ($AutoSFree == 1)
+// {
+// echo "<br>El auto esta libre";
+// }
+// else {
+//   echo "<br>El auto Esta ocupado";
+// }
+//
+//
+// if ($ChoferSFree == 1)
+// {
+// echo "<br>El Chofer esta libre";
+// }
+// else {
+//   echo "<br>El Chofer Esta ocupado";
+// }
+
+
+if ($AutoSFree == 1 )
+ {
+    if ($ChoferSFree == 1)
+    {
+      //los dos estan libres, se inserta el registro
+
+      // echo "<br>se inserta!";
+
+      $sql = 'INSERT INTO MovcAutos (IdAuto,IdChofer,FechaInicial,FechaFinal,Destino,IdResponsable) VALUES ('.$IdAuto.','.$IdChofer.',"'.$FechaInicial.'","'.$FechaFinal.'","'.$Destino.'",'.$IdResponsable.') ';
+
+      if ($conexion->query($sql)) {
+        header('Location: app.php?AccionViajes=4&MensajeViajes=Viaje Agregado  Correctamente&BanderaViajes=1#Viajes');
+
+      }
+      else {
+        header('Location: app.php?AccionViajes=4&MensajeViajes=Viaje No Agregado  Correctamente&BanderaViajes=2#Viajes');
+      }
+    }
+    else
+    {
+      //el chofer esta ocupado, seleccione otro chofer
+      header('Location: app.php?AccionViajes=4&MensajeViajes=El Chofer esta ocupado en este rango de fechas&BanderaViajes=2#Viajes');
+        // echo "<br>chofer ocupado";
+    }
+}
+else
+{
+//El auto esta ocupado seleccione otro vehiculo
+header('Location: app.php?AccionViajes=4&MensajeViajes=El Vehiculo esta ocupado en este rango de fechas&BanderaViajes=2#Viajes');
+// echo "<br>auto ocupado";
+}
+
+
+
+
+
+// $sql = 'INSERT INTO MovcAutos (IdAuto,IdChofer,FechaInicial,FechaFinal,Destino,IdResponsable) VALUES ('.$IdAuto.','.$IdChofer.',"'.$FechaInicial.'","'.$FechaFinal.'","'.$Destino.'",'.$IdResponsable.') ';
+
+// echo $sql;
+
+
+
 // $row = $resultado->fetch_array(MYSQLI_ASSOC);
 
  mysqli_close($conexion);

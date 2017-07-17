@@ -22,7 +22,7 @@ session_start();
 
   if ($username == '')
   {
-  //  header('Location: Error.html');
+   header('Location: Error.php?Mensaje=Usuario Vacio');
   echo "error";
   }
 
@@ -46,8 +46,8 @@ session_start();
 	    echo "Bienvenido! " . $_SESSION['username'];
 	     header('Location: app.php');
 	 } else {
-	    // header('Location: Error.html');
-      echo "error2";
+	    header('Location: Error.php?Mensaje=Contraseña incorrecta');
+      // echo "error2";
 
 
 	 }
