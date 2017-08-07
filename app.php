@@ -42,6 +42,7 @@ if ($conexion->connect_error) {
 	<link rel="stylesheet" href="assets/css/bootstrap.css">
 	<link rel="stylesheet" href="assets/css/main.css" />
 	<link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.css" />
+	<script src='assets/fullcalendar-3.4.0/locale-all.js'></script>
 	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 </head>
@@ -138,16 +139,36 @@ if ($conexion->connect_error) {
                     echo '
                     </select>
                         </div>
+
                         <div class="6u 12u$(mobile)">
                         <label for="">Fecha Inicial</label>
 
                         <input type="text" name="FechaInicial" id="datetimepicker1" placeholder="FechaInicial" value="" required>
                         </div>
+
                         <div class="6u$ 12u$(mobile)">
                         <label for="">Fecha Final</label>
 
                         <input type="text" name="FechaFinal" id="datetimepicker2" placeholder="FechaFinal" value="" required>
                         </div>
+
+													<!--  -->
+												<div class="6u 12u$(mobile)">
+                        <label for="">Ocupantes</label>
+
+                        <input type="text" name="Ocupantes" placeholder="Ocupantes" value="" required>
+                        </div>
+
+                        <div class="6u$ 12u$(mobile)">
+                        <label for="">Materia</label>
+
+                        <input type="text" name="Materia"  placeholder="Materias" value="" required>
+                        </div>
+
+
+
+
+
                         <div class="12u$">
                         <label for="">Destino</label>
 
@@ -158,7 +179,7 @@ if ($conexion->connect_error) {
 
                           <select class="" name="IdResponsable" required> ';
                           echo '<option value="0" >Seleccione un Responsable</option>';
-                              $sql = 'SELECT *,Concat(NoEmpleado,"  ",Nombre," ",ApellidoPaterno) As Responsable  FROM CatcResponsables';
+                              $sql = 'SELECT *,Concat(NoEmpleado,"  ",Nombre," ",ApellidoPaterno) As Responsable  FROM CatcResponsables Where Activo = 1';
                               $resultado = $conexion->query($sql);
                               while ($row = $resultado->fetch_assoc() )
                                {
@@ -200,6 +221,8 @@ if ($conexion->connect_error) {
                     $Chofer = $row["Chofer"];
                     $FechaInicial = $row["FechaInicial"];
                     $FechaFinal = $row["FechaFinal"];
+										$Ocupantes = $row["NoOcupantes"];
+										$Materia = $row["Materia"];
                     $Destino =  $row["Destino"];
                     $Responsable =  $row["Responsable"];
                     $IdResponsable =  $row["IdResponsable"];
@@ -226,16 +249,34 @@ if ($conexion->connect_error) {
               echo '		</select>
 
                   </div>
+
+
                   <div class="6u 12u$(mobile)">
                   <label for="">Fecha Inicial</label>
-
                   <input type="text" name="FechaInicial" placeholder="FechaInicial" id="datetimepicker3" value="'.$FechaInicial.'">
                   </div>
+
+
                   <div class="6u$ 12u$(mobile)">
                   <label for="">Fecha Final</label>
-
                   <input type="text" name="FechaFinal" placeholder="FechaFinal" id="datetimepicker4" value="'.$FechaFinal.'">
                   </div>
+
+
+
+                  <div class="6u 12u$(mobile)">
+                  <label for="">Ocupantes</label>
+                  <input type="text" name="Ocupantes" placeholder="Ocupantes" value="'.$Ocupantes.'">
+                  </div>
+
+
+                  <div class="6u$ 12u$(mobile)">
+                  <label for="">Materia</label>
+                  <input type="text" name="Materia" placeholder="Materia"  value="'.$Materia.'">
+                  </div>
+
+
+
                   <div class="12u$">
                   <label for="">Destino</label>
 
@@ -258,7 +299,7 @@ if ($conexion->connect_error) {
                   <div class="12u$">
                     <input type="text" name="IdMovAutos" value="'.$IdMovAutos.'" style="display:none;">
                     <input type="submit" value="Guardar" />
-                    <a href="app.php#Viajes">  <input type="button" value="Regresar" /></a>
+                    <a href="app.php#Viajes">  <input type="button" value="Regresar" /></a><a href="EliminarViaje.php?IdMovAutos='.$IdMovAutos.'"> <input type="button" style="color:Red;" value="Eliminar" /></a>
 
                   </div>
                 </div>
@@ -318,11 +359,14 @@ if ($conexion->connect_error) {
                     <th>Fecha Final</th>
                     <th>Destino</th>
                     <th>Responsable</th>
+										<th>Mat</th>
+										<th>Ocup</th>
+
 
                       </tr>
                     </thead>
                     <tbody>';
-                    $sql = 'SELECT a.IdMovAutos,Concat(b.Linea," ",b.Modelo) As Auto, Concat(c.Nombre," ",c.ApellidoPaterno) As Chofer, a.FechaInicial ,a.FechaFinal, a.Destino, Concat(d.Nombre," ",d.ApellidoPaterno) As Responsable  FROM MovcAutos a INNER JOIN Autos b on a.IdAuto = b.IdAuto INNER JOIN CatcChoferes c on a.IdChofer = c.IdChofer INNER JOIN CatcResponsables d on a.IdResponsable = d.IdResponsable  ORDER BY 1 ';
+                    $sql = 'SELECT a.IdMovAutos,Concat(b.Linea," ",b.Modelo) As Auto, Concat(c.Nombre," ",c.ApellidoPaterno) As Chofer,  DATE_FORMAT(a.FechaInicial, "%d-%b-%Y ")  As FechaInicial,DATE_FORMAT(a.FechaFinal, "%d-%b-%Y ")  As FechaFinal, a.Destino, Concat(d.Nombre," ",d.ApellidoPaterno) As Responsable ,a.NoOcupantes As Ocupantes, a.Materia As Materia FROM MovcAutos a INNER JOIN Autos b on a.IdAuto = b.IdAuto INNER JOIN CatcChoferes c on a.IdChofer = c.IdChofer INNER JOIN CatcResponsables d on a.IdResponsable = d.IdResponsable WHERE a.Activo = 1 ORDER BY 1 DESC ';
                     $resultado = $conexion->query($sql);
                     while ($row = $resultado->fetch_assoc() )
                      {
@@ -335,6 +379,8 @@ if ($conexion->connect_error) {
                                 <td>'.$row["FechaFinal"].'</td>
                                 <td>'.$row["Destino"].'</td>
                                 <td>'.$row["Responsable"].'</td>
+																<td>'.$row["Materia"].'</td>
+																<td>'.$row["Ocupantes"].'</td>
                               </tr>
                               ';
                         }

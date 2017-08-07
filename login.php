@@ -20,12 +20,15 @@ session_start();
 
   echo "$username";
 
-  if ($username == '')
+  if ($username == '' || $username == 'Usuario')
   {
    header('Location: Error.php?Mensaje=Usuario Vacio');
   echo "error";
-  }
-
+}  else if ($password == '')
+  {
+   header('Location: Error.php?Mensaje=Usuario Vacio');
+  echo "error";
+}
 
 
 	$sql = "SELECT * FROM $tbl_name WHERE Usuario = '$username'";

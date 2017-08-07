@@ -18,6 +18,8 @@ $FechaFinal = $_POST["FechaFinal"];
 $Destino = $_POST["Destino"];
 $IdResponsable = $_POST["IdResponsable"];
 
+$Ocupantes = $_POST["Ocupantes"];
+$Materia = $_POST["Materia"];
 
 $AutoSFree = 0;
 $ChoferSFree = 0;
@@ -105,8 +107,8 @@ if ($AutoSFree == 1 )
 
       // echo "<br>se inserta!";
 
-      $sql = 'INSERT INTO MovcAutos (IdAuto,IdChofer,FechaInicial,FechaFinal,Destino,IdResponsable) VALUES ('.$IdAuto.','.$IdChofer.',"'.$FechaInicial.'","'.$FechaFinal.'","'.$Destino.'",'.$IdResponsable.') ';
-
+      $sql = 'INSERT INTO MovcAutos (IdAuto,IdChofer,FechaInicial,FechaFinal,Destino,IdResponsable,NoOcupantes,Materia,Activo) VALUES ('.$IdAuto.','.$IdChofer.',"'.$FechaInicial.'","'.$FechaFinal.'","'.$Destino.'",'.$IdResponsable.',"'.$Ocupantes.'","'.$Materia.'",1) ';
+echo $sql;
       if ($conexion->query($sql)) {
         header('Location: app.php?AccionViajes=4&MensajeViajes=Viaje Agregado  Correctamente&BanderaViajes=1#Viajes');
 

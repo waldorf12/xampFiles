@@ -8,17 +8,20 @@
 <script src='assets/js/moment.min.js'></script>
 <script src='assets/js/jquery.min.js'></script>
 <script src='assets/js/fullcalendar.min.js'></script>
+<script src='assets/fullcalendar-3.4.0/locale-all.js'></script>
 <script>
 
 	$(document).ready(function() {
 
 		$('#calendar').fullCalendar({
+			lang: 'es',
 			header: {
 				left: 'prev,next today',
 				center: 'title',
 				right: 'month,basicWeek,basicDay'
 			},
 			// defaultDate: 'today',
+
 			navLinks: true, // can click day/week names to navigate views
 			editable: false,
 			eventLimit: true, // allow "more" link when too many events
@@ -38,7 +41,7 @@
          die("La conexion falló: " . $conexion->connect_error);
         }
 
-        $sql = 'SELECT a.IdMovAutos As Id,Concat(b.Linea," ",b.Modelo) As Auto, Concat(c.Nombre," ",c.ApellidoPaterno) As Chofer, a.FechaInicial ,a.FechaFinal, a.Destino, Concat(d.Nombre," ",d.ApellidoPaterno," ",d.ApellidoMaterno) As Responsable  FROM MovcAutos a INNER JOIN Autos b on a.IdAuto = b.IdAuto INNER JOIN CatcChoferes c on a.IdChofer = c.IdChofer INNER JOIN CatcResponsables d on a.IdResponsable = d.IdResponsable ';
+        $sql = 'SELECT a.IdMovAutos As Id,Concat(b.Linea," ",b.Modelo) As Auto, Concat(c.Nombre," ",c.ApellidoPaterno) As Chofer, a.FechaInicial ,a.FechaFinal, a.Destino, Concat(d.Nombre," ",d.ApellidoPaterno) As Responsable  FROM MovcAutos a INNER JOIN Autos b on a.IdAuto = b.IdAuto INNER JOIN CatcChoferes c on a.IdChofer = c.IdChofer INNER JOIN CatcResponsables d on a.IdResponsable = d.IdResponsable ';
 
 
         $resultado = $conexion->query($sql);
@@ -60,7 +63,7 @@
 
 						echo '
 						{
-							title: "'.$row["Auto"].' - '.$row["Chofer"].'",
+							title: "'.$row["Auto"].' - '.$row["Chofer"].' - '.$row["Responsable"].' - '.$row["FechaInicial"].' a '.$row["FechaFinal"].' ",
 							start: "'.$row["FechaInicial"].'",
 							end: "'.$nuevafecha.'"
 						},
@@ -79,6 +82,7 @@
         // Bucle php
 
 			]
+			,lang: 'es'
 		});
 
 	});

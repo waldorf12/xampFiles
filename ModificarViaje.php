@@ -17,9 +17,11 @@ $FechaInicial = $_POST["FechaInicial"];
 $FechaFinal = $_POST["FechaFinal"];
 $Destino = $_POST["Destino"];
 $IdResponsable = $_POST["IdResponsable"];
+$Ocupantes = $_POST["Ocupantes"];
+$Materia = $_POST["Materia"];
 
 
-$sql = 'UPDATE MovcAutos SET IdAuto = '.$IdAuto.' ,IdChofer = '.$IdChofer.',FechaInicial = "'.$FechaInicial.'",FechaFinal = "'.$FechaFinal.'" , Destino =  "'.$Destino.'" , IdResponsable = '.$IdResponsable.' WHERE IdMovAutos = '.$IdMovAutos.'';
+$sql = 'UPDATE MovcAutos SET IdAuto = '.$IdAuto.' ,IdChofer = '.$IdChofer.',FechaInicial = "'.$FechaInicial.'",FechaFinal = "'.$FechaFinal.'" , Destino =  "'.$Destino.'" , IdResponsable = '.$IdResponsable.',NoOcupantes = '.$Ocupantes.', Materia = "'.$Materia.'" WHERE IdMovAutos = '.$IdMovAutos.'';
 
 echo $sql;
 
