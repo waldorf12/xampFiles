@@ -89,7 +89,9 @@ if ($conexion->connect_error) {
 				</header>
 				<p>
 					Seccion de muestra adición y modificacion de Viajes.
+
 				</p>
+
         <?php
 
 
@@ -109,9 +111,32 @@ if ($conexion->connect_error) {
             case '1':
             //Insertar
 
-            echo '<form action="AgregarViaje.php" method="post">
+            echo '<form action="AgregarViaje.php" method="post" name="AgregarViaje">
               <div>
                 <div class="row">
+
+
+<script type="text/javascript">
+
+	function TontaValidacionDeOscar()
+	{
+			var AuxOSK  = $("#IdResponsable").val();
+
+			if (AuxOSK == 0)
+
+			{
+					alert("No Oskar necesitas seleccionar un responsable");
+			}
+			else
+			{
+				 document.AgregarViaje.submit()
+			}
+
+	}
+</script>
+
+
+
                   <div class="6u 12u$(mobile)">
                     <label for="">Auto</label>
 
@@ -177,7 +202,7 @@ if ($conexion->connect_error) {
                         <div class="12u$">
                         <label for="">Responsable</label>
 
-                          <select class="" name="IdResponsable" required> ';
+                          <select class="" name="IdResponsable" required id="IdResponsable"> ';
                           echo '<option value="0" >Seleccione un Responsable</option>';
                               $sql = 'SELECT *,Concat(NoEmpleado,"  ",Nombre," ",ApellidoPaterno) As Responsable  FROM CatcResponsables Where Activo = 1';
                               $resultado = $conexion->query($sql);
@@ -189,7 +214,9 @@ if ($conexion->connect_error) {
                       </select>
                         </div>
                         <div class="12u$">
-                          <input type="submit" value="Guardar" />
+                          <!-- <input type="submit" value="Guardar" /> -->
+
+													      <input type="button" value="Guardar" onclick="TontaValidacionDeOscar();"/>
                         </div>
                       </div>
                     </div>
@@ -347,6 +374,11 @@ if ($conexion->connect_error) {
             echo '
             <section>
               <div class="row">
+							<div class="12u$">
+
+
+							<a href="app.php?AccionViajes=1#Viajes">  <input type="button" name="" value="Agregar"></a>
+							</div>
                 <div class="12u 12u$(mobile)">
                   <!-- <a href="#" class="image fit"><img src="images/pic01.jpg" alt=""></a> -->
                   <table class="table table-striped">
@@ -366,7 +398,7 @@ if ($conexion->connect_error) {
                       </tr>
                     </thead>
                     <tbody>';
-                    $sql = 'SELECT a.IdMovAutos,Concat(b.Linea," ",b.Modelo) As Auto, Concat(c.Nombre," ",c.ApellidoPaterno) As Chofer,  DATE_FORMAT(a.FechaInicial, "%d-%b-%Y ")  As FechaInicial,DATE_FORMAT(a.FechaFinal, "%d-%b-%Y ")  As FechaFinal, a.Destino, Concat(d.Nombre," ",d.ApellidoPaterno) As Responsable ,a.NoOcupantes As Ocupantes, a.Materia As Materia FROM MovcAutos a INNER JOIN Autos b on a.IdAuto = b.IdAuto INNER JOIN CatcChoferes c on a.IdChofer = c.IdChofer INNER JOIN CatcResponsables d on a.IdResponsable = d.IdResponsable WHERE a.Activo = 1 ORDER BY 1 DESC ';
+                    $sql = 'SELECT a.IdMovAutos,Concat(b.Linea," ",b.Modelo) As Auto, Concat(c.Nombre," ",c.ApellidoPaterno) As Chofer,  DATE_FORMAT(a.FechaInicial, "%d-%b-%Y ")  As FechaInicial,DATE_FORMAT(a.FechaFinal, "%d-%b-%Y ")  As FechaFinal, a.Destino, Concat(d.Nombre," ",d.ApellidoPaterno) As Responsable ,a.NoOcupantes As Ocupantes, a.Materia As Materia FROM MovcAutos a INNER JOIN Autos b on a.IdAuto = b.IdAuto INNER JOIN CatcChoferes c on a.IdChofer = c.IdChofer INNER JOIN CatcResponsables d on a.IdResponsable = d.IdResponsable WHERE a.Activo = 1 ORDER BY 7  ';
                     $resultado = $conexion->query($sql);
                     while ($row = $resultado->fetch_assoc() )
                      {

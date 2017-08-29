@@ -44,7 +44,7 @@ session_start();
 	    $_SESSION['loggedin'] = true;
 	    $_SESSION['username'] = $username;
 	    $_SESSION['start'] = time();
-	    $_SESSION['expire'] = $_SESSION['start'] + (15 * 60);
+	    $_SESSION['expire'] = $_SESSION['start'] + (120 * 60);
 
 	    echo "Bienvenido! " . $_SESSION['username'];
 	     header('Location: app.php');
